@@ -2,56 +2,41 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- These scripts are essential for iPhone AR -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <!-- We are using A-Frame's built-in WebXR for "No Marker" tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #ar-instructions {
+        position: fixed; top: 10px; width: 100%; text-align: center;
+        z-index: 10; color: white; background: rgba(0,0,0,0.5); font-family: sans-serif;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
+  <body>
 
-    <a-scene xr-mode-ui="enabled: true" renderer="colorManagement: true;">
+    <div id="ar-instructions">Point camera at a flat surface and move slowly</div>
+
+    <!-- The "uiScanning: no" part is what removes the marquee tool you hated! -->
+    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.mind; autoStart: true; uiLoading: no; uiScanning: no;" 
+             embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
-      <!-- Assets: This tells the browser to load your images first -->
-      <a-assets>
-        <img id="img1" src="1.jpg">
-        <img id="img2" src="2.jpg">
-        <img id="img3" src="3.jpg">
-        <img id="img4" src="4.jpg">
-        <img id="img5" src="5.jpg">
-        <img id="img6" src="6.jpg">
-      </a-assets>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-camera position="0 1.6 0"></a-camera>
+      <!-- The Gallery Group -->
+      <!-- On iPhone, these will appear once the camera activates -->
+      <a-entity id="museum-group" position="0 0 -2">
+        
+        <a-image src="1.jpg" position="0 1.5 0" width="1" height="1.5"></a-image>
+        <a-image src="2.jpg" position="-1.5 1.5 0.5" rotation="0 45 0" width="1" height="1"></a-image>
+        <a-image src="3.jpg" position="1.5 1.5 0.5" rotation="0 -45 0" width="1" height="1"></a-image>
+        <a-image src="4.jpg" position="-2.5 1.2 2" rotation="0 90 0" width="1.5" height="1"></a-image>
+        <a-image src="5.jpg" position="2.5 1.2 2" rotation="0 -90 0" width="1.5" height="1"></a-image>
 
-      <!-- THE MUSEUM LAYOUT -->
-      <!-- We place images in a circle around the starting point (0,0,0) -->
+      </a-entity>
 
-      <!-- Center Front -->
-      <a-image src="#img1" position="0 1.6 -3" width="1.5" height="2"></a-image>
-
-      <!-- Front Left (Angled) -->
-      <a-image src="#img2" position="-2.5 1.6 -2" rotation="0 45 0" width="1.5" height="1.5"></a-image>
-
-      <!-- Front Right (Angled) -->
-      <a-image src="#img3" position="2.5 1.6 -2" rotation="0 -45 0" width="1.5" height="1.5"></a-image>
-
-      <!-- Far Left Wall -->
-      <a-image src="#img4" position="-4 1.6 1" rotation="0 90 0" width="2" height="1.5"></a-image>
-
-      <!-- Far Right Wall -->
-      <a-image src="#img5" position="4 1.6 1" rotation="0 -90 0" width="2" height="1.5"></a-image>
-
-      <!-- Behind the user -->
-      <a-image src="#img6" position="0 1.6 3" rotation="0 180 0" width="1.5" height="1.5"></a-image>
-
-      <!-- Soft Museum Lighting -->
-      <a-light type="ambient" intensity="0.7"></a-light>
-      <a-light type="directional" position="0 5 2" intensity="0.5"></a-light>
-
+      <a-light type="ambient" intensity="1"></a-light>
     </a-scene>
-
-    <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999;">
-        <button onclick="document.querySelector('a-scene').enterAR()" style="padding: 15px 25px; border-radius: 30px; border: none; background: #007bff; color: white; font-size: 18px; font-weight: bold; cursor: pointer;">
-            ENTER MUSEUM
-        </button>
-    </div>
   </body>
 </html>
